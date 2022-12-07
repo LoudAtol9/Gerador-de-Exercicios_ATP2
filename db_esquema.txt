@@ -1,0 +1,38 @@
+2                     // qnts classes
+[pos_t][pos_t][pos_t] // lista com o endereço das classes max 3
+
+'pessoas\n..'
+3                                   // qnts objetos - proto
+[pos_t][pos_t][pos_t][pos_t][pos_t] // lista com o endereço dos objetos max 5
+
+'proto\n....'                                          // nome do obj 10char max
+'balas\n....''*'2 0 0                                  // nome da var 10char max
+'frase\n....''#'35 ................................... // nome da var 10char max
+;
+
+'John\n.....'
+'balas\n....''*'2 3 5                                   // int 4byte
+'frase\n....''#'35 Imagine all the people\n............ // char 35bytes max
+;
+
+'produto\n..'
+2                     // qnts objetos - proto
+[pos_t][pos_t][pos_t] // lista com o endereço dos objetos max 3
+
+'proto\n....'                                          // nome do obj 10char max
+'preco\n....''$'1 0                                    // nome da var 10char max
+'nome\n.....''#'35 ................................... // nome da var 10char max
+;
+
+'pera\n.....'                                           // nome do obj 10char max
+'preco\n....''$'1 0                                     // nome da var 10char max
+'nome\n.....''#'35 pera\n.............................. // nome da var 10char max
+;
+
+
+'Ringo\n....'
+'balas\n....''*'2 10 0                                  // int 4byte
+'frase\n....''#'35 We are in a Yellow Submarine!\n..... // char 35bytes
+;
+
+EOF
