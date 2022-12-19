@@ -98,6 +98,18 @@ PACOTE* criador_PACOTE();
 // ------- Leitura do DB -------
 
 /*
+** Recebe arquivo
+** Retorna a qnt de objetos
+*/
+int qnts_classes_nome(FILE* file_ptr);
+
+/*
+** Recebe arquivo, nome da classe
+** Retorna a qnt de objetos naquela classe
+*/
+int qnts_objetos_nome(FILE* file_ptr, char* nome_cls);
+
+/*
 ** Busca e salva no Heap a variavel requisitada do DB, 
 ** Recebe o nome da classe, do objeto e da variavel como (char*)
 ** Retorna o index da lista do pacote correspondente ao tipo

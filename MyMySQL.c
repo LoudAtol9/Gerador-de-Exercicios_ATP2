@@ -42,6 +42,8 @@ void add_var(FILE* file_ptr, char* nome, int tipo, int len);
 // Busca (lê) - Edita - Escreve:
 void* proto_busca_var_por_nome(int* tipo, int* len, FILE* file_ptr, char* nome_cls, char* nome_obj, char* nome_var);
 void* proto_busca_var_por_ID(int* tipo, int* len, FILE* file_ptr, int id_cls, int id_obj, char* nome_var);
+int qnts_classes_nome(FILE* file_ptr);
+int qnts_objetos_nome(FILE* file_ptr, char* nome_cls);
 int editar_var_por_nome(FILE* file_ptr, char* nome_cls, char* nome_obj, char* nome_var, void* var, int tam_var);
 int editar_var_por_ID(FILE* file_ptr, int id_cls, int id_obj, char* nome_var, void* var, int tam_var);
 void inicia_db(FILE* file_ptr, int qnts_cls);
@@ -154,6 +156,53 @@ bool str_comp(char* str_arq, char* str_input)
             break;
     }
     return b;       
+}
+
+// Retorne quantas classes tem 
+int qnts_classes_nome(FILE* file_ptr)
+{
+    int i;
+    fpos_t* end_cls;
+    fpos_t* end_obj;
+    int qnt_cls;
+    int qnt_obj;
+    char* nome = (char*) malloc(10 * sizeof(char));
+
+    fseek(file_ptr, 0, SEEK_SET);
+
+    // Recebe a lista com os enderecos das classes
+    end_cls = retorna_endereco(file_ptr, &qnt_cls);
+    return qnt_cls;
+}
+
+
+// Retorna quantas objetos tem
+int qnts_objetos_nome(FILE* file_ptr, char* nome_cls)
+{
+    int i;
+    fpos_t* end_cls;
+    fpos_t* end_obj;
+    int qnt_cls;
+    int qnt_obj;
+    char* nome = (char*) malloc(10 * sizeof(char));
+
+    fseek(file_ptr, 0, SEEK_SET);
+
+    // Recebe a lista com os enderecos das classes
+    end_cls = retorna_endereco(file_ptr, &qnt_cls);
+
+    // Ve qual classe tem o nome requisitado
+    for (i = 0; i < qnt_cls; i++)
+    {
+        fsetpos(file_ptr, &(end_cls[i]));
+        fread(nome, sizeof(char), 10, file_ptr);
+        if (str_comp(nome, nome_cls))
+            break;
+    }
+
+    // Recebe a lista com os enderecos dos objetos
+    end_obj = retorna_endereco(file_ptr, &qnt_obj);
+    return qnt_obj;
 }
 
 
@@ -465,6 +514,104 @@ int editar_var_por_ID(FILE* file_ptr, int id_cls, int id_obj, char* nome_var, vo
     } 
 }
 
+
+/*
+// Edita a Variavel no local designado 
+int editar_var_UX(FILE* file_ptr, char* nome_cls, char* nome_obj, int tam_var)
+{
+    int i;
+    int j;
+    int tipo;
+    int len;
+    void* var;
+    int* var_int;
+    float* var_float;
+    char* var_char;
+    char* nome = (char*) malloc(11 * sizeof(char));
+    fpos_t* end_obj = busca_end_por_nome(file_ptr, nome_cls, nome_obj);
+    fpos_t end_1;
+    
+    while (1)
+    {
+        fgetpos(file_ptr, &end_1);
+
+        fread(nome, sizeof(char), 10, file_ptr);
+
+        if(nome[0] == ';')
+            return 0;
+
+        printf("Variavel: %s\n", nome);
+        fread(&tipo, sizeof(int), 1, file_ptr);
+        printf("Tipo : %d\n",tipo);
+        fread(&len, sizeof(int), 1, file_ptr);
+        printf("Tamanho : %d\n", len);
+        printf("Escrito : ");
+
+        var = malloc((len) * type_2_sizeof(tipo));
+        fread(var, type_2_sizeof(tipo), len, file_ptr);
+
+        switch (tipo)
+            {
+            case TYPE_INT:
+                var_int = (int*) var;
+                for (j = 0; j < len; j++)
+                    printf("%d ", var_int[j]);
+                break;
+    
+            case TYPE_FLOAT:
+                var_float = (float*) var;
+                for (j = 0; j < len; j++)
+                    printf("%f ", var_float[j]);
+                break;
+
+            case TYPE_CHAR:
+                var_char = (char*) var;
+                for (j = 0; j < len; j++)
+                    printf("%c", var_char[j]);
+                break;
+            }
+            printf("\n\n");
+
+        printf("Deseja Mudar o valor da variavel?\n");
+        printf("0 - Nao\n");
+        printf("1 - Sim\n");
+        sscanf("%d", j);
+
+        if (j == 1)
+        {
+            switch (tipo)
+            {
+            case TYPE_INT:
+                sscanf("%s");
+                for (i = 0; i < len; i++)
+                {   
+                }
+                
+                break;
+    
+            case TYPE_FLOAT:
+                var_float = (float*) var;
+                for (j = 0; j < len; j++)
+                    printf("%f ", var_float[j]);
+                break;
+
+            case TYPE_CHAR:
+                var_char = (char*) var;
+                for (j = 0; j < len; j++)
+                    printf("%c", var_char[j]);
+                break;
+            }
+
+            escreve_var(file_ptr, nome, tipo, len, var, tam_var);
+        }
+        
+
+        free(var);
+
+           
+    }
+}
+*/
 
 // Usa na primeira vez que o db foi criado
 void inicia_db(FILE* file_ptr, int qnts_cls)
@@ -853,6 +1000,5 @@ int main()
     busca_var_por_nome(pact, file_ptr, nome_cls, nome_obj, nome_var[0]);
     busca_var_por_ID(pact, file_ptr, 0, 1, nome_var[0]);
     busca_var_por_nome(pact, file_ptr, nome_cls, nome_obj, nome_var[1]);
-
     print_cls_db(file_ptr, nome_cls);
 }
