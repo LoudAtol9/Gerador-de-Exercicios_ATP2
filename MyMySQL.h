@@ -76,7 +76,7 @@ typedef struct pacote
 ** Recebe o nome do arquivo e abre em binário,
 ** ou cria se não existir 
 */
-FILE* abrir_arq(char* file_nome);
+FILE* abrir_arq(char* file_nome, bool* criou);
 
 /*
 ** Cria o index do DB, 
