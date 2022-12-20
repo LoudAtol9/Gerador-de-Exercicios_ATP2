@@ -1,5 +1,5 @@
 #include "MyMySQL.h" 
-
+#define QNT_CLS 10
 
 // Protótipos das Funções
 
@@ -52,7 +52,7 @@ void criar_objeto(FILE* file_ptr, char* nome_cls, char* nome_obj);
 
 
 // MYMYSQL:
-FILE* abrir_arq(char* file_nome);
+FILE* abrir_arq(char* file_nome, bool* criou);
 int busca_var_por_nome(PACOTE* pact, FILE* file_ptr, char* nome_cls, char* nome_obj, char* nome_var);
 int busca_var_por_ID(PACOTE* pact, FILE* file_ptr, int id_cls, int id_obj, char* nome_var);
 
@@ -851,12 +851,14 @@ void criar_objeto(FILE* file_ptr, char* nome_cls, char* nome_obj)
 
 
 // Abre o arquivo, se nao existir cria
-FILE* abrir_arq(char* file_nome)
+FILE* abrir_arq(char* file_nome, bool* criou)
 {
     FILE* file_ptr = fopen(file_nome, "rb+");
+    *criou = (file_ptr == NULL) ? true : false;
 
     if (file_ptr == NULL)
         file_ptr = fopen(file_nome, "wb+");
+        inicia_db(file_ptr, QNT_CLS);
 
     return file_ptr;
 }
